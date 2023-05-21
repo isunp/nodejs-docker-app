@@ -30,16 +30,90 @@ $ heroku create
 $ git push heroku main
 $ heroku open
 ```
-or
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+# Node.js Dockerfile
 
-## Documentation
+This repository contains a Dockerfile for a Node.js application. The Dockerfile is based on the official Node.js 18.x image from Docker Hub.
+Overview
 
-For more information about using Node.js on Heroku, see these Dev Center articles:
+The Dockerfile performs the following steps:
 
-- [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+   1. Sets the base image as `Node.js 18.x`.
+   2. Creates a working directory for the application.
+   3. Copies the `package.json` file into the container.
+   4. Installs necessary dependencies via npm install.
+   5. Copies the rest of the application code into the container.
+   6. Sets the command to start the application as npm start.
+   7. Exposes the application on port `5001`.
+
+## Build the image
+
+To build the Docker image, run the following command in the same directory as the Dockerfile:
+
+```bash
+docker build -t <tag-name> .
+```
+
+Replace <tag-name> with a name for your image.
+Run the container
+
+Once the image has been built, you can run a container with the following command:
+
+```bash
+
+docker run -p 5001:5001 <tag-name>
+```
+
+This command will start a new container and expose the application on port 5001 of your host machine.
+Notes
+
+This Dockerfile uses the Alpine version of Node.js 18.x, which is smaller than the standard version. This helps to keep the size of the Docker image to a minimum.
+
+# Loki, Promtail, Grafana, and Node.js Docker Compose Setup
+
+This project is a Docker Compose setup for Loki, Promtail, Grafana, and a Node.js application that logs using Loki.
+
+## Version
+
+This project uses `version 3` of the Docker Compose file format (`version: '3'`).
+
+## Networks
+
+The project uses a single network: `docker-lab`.
+
+## Services
+
+The project is composed of the following services:
+
+### Loki
+
+This is a service that runs the Grafana Loki log aggregator and is configured to use the local config file `./loki/local-config.yaml`. It is exposed on port `3100` and its data is stored in a named volume `loki-data`.
+
+### Promtail
+
+This is a service that runs the Grafana Promtail log collector and is configured to use the local config file `./promtail/config.yaml`. It is mounted with the host directories `/var/lib/docker/containers` and `/var/log` so that it can collect logs from the Docker containers and the host machine. It is not exposed on any ports.
+
+### Grafana
+
+This is a service that runs Grafana 7.5.5 and is accessible on port `3000`. It is configured to use the local directory `./grafana/provisioning` for provisioning files and is mounted with the named volume `grafana-data` for persisting data. It is also configured with the environment variable `GF_SECURITY_ADMIN_PASSWORD` set to `admin`.
+
+### Node.js
+
+This is a service that builds a Node.js application and runs it on port `5001`. It depends on the `loki` service to be running and is configured with the environment variable `LOGGING_BACKEND_URL` set to `http://loki:3100/loki/api/v1/push` so that it logs using Loki.
+
+## Volumes
+
+The project uses the following named volumes:
+
+- `loki-config`
+- `loki-data`
+- `grafana-data`
+
+### Logs form loki datasource in grafana dashboard 
+<img src="./loki/loki-logs.png" alt="Loki Datasource" title="Loki Datasource" />
+
+
+
+### Nodejs application
+<img src="./node-logs.png" alt="nodejs app" title="nodejs app" />
+
