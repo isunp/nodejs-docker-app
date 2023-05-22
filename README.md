@@ -117,7 +117,7 @@ The project uses the following named volumes:
 ### Nodejs application
 <img src="./node-logs.png" alt="nodejs app" title="nodejs app" />
 
-## Usages
+## Usage
 
 Navigate to the directory where the Docker-compose file is located and run the following command:
 
