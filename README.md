@@ -117,6 +117,23 @@ The project uses the following named volumes:
 ### Nodejs application
 <img src="./node-logs.png" alt="nodejs app" title="nodejs app" />
 
+## Usages
+
+Navigate to the directory where the Docker-compose file is located and run the following command:
+
+`docker-compose up -d`
+
+Access the following applications in your web browser:
+Node-js: http://localhost:5001
+
+Grafana: http://localhost:3000
+
+Stop the containers with the following command:
+`docker-compose down`
+
+Check the status of running containers with:
+`docker-compose ps`
+
 
 # Script that prints numbers from 0 to 100 and convert every 10th digit to a wordy version
 ```bash
@@ -128,3 +145,7 @@ for i in range(101):
 ```
 
 This is a simple Python script that uses a for loop to iterate through the range of numbers from 0 to 100. For each number, it checks if it is divisible by 10, and if so, it prints the wordy version of the number (e.g. "Ten" for 10, "Twenty" for 20, etc.) by accessing the appropriate index in the list. If the number is not divisible by 10, it simply prints the number.
+
+## Usage
+
+`python3 script.py`
