@@ -117,3 +117,14 @@ The project uses the following named volumes:
 ### Nodejs application
 <img src="./node-logs.png" alt="nodejs app" title="nodejs app" />
 
+
+# Script that prints numbers from 0 to 100 and convert every 10th digit to a wordy version
+```bash
+for i in range(101):
+    if i % 10 == 0 and i != 0:
+        print(str(i) + " - " + ["Ten","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety","Hundred"][int(i/10)-1])
+    else:
+        print(i)
+```
+
+This is a simple Python script that uses a for loop to iterate through the range of numbers from 0 to 100. For each number, it checks if it is divisible by 10, and if so, it prints the wordy version of the number (e.g. "Ten" for 10, "Twenty" for 20, etc.) by accessing the appropriate index in the list. If the number is not divisible by 10, it simply prints the number.
